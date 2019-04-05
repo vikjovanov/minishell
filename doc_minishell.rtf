@@ -1,0 +1,127 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww26220\viewh25460\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 minishell: recoder un shell de facon basique\
+\
+Fonctions autorises:\
+	connus:\
+		
+\b malloc\
+			
+\b0 allouer memoire
+\b \
+		free\
+		
+\b0 	liberer memoire
+\b 	\
+		open\
+			
+\b0 ouvrir un file descriptor de fichier
+\b \
+		close\
+			
+\b0 fermer un file descriptor de fichier
+\b \
+		read\
+			
+\b0 lire un fichier
+\b \
+		write\
+			
+\b0 ecrire dans un fichier
+\b \
+		opendir\
+			
+\b0 ouvrir un file descriptor de dir
+\b \
+		readdir\
+			
+\b0 grace au pointeur rendu par opendir, lire tous les fichiers contenus dans le dossier (+ d\'92infos r\'e9cup\'e8res grace a stat, lstat)
+\b \
+		closedir\
+			
+\b0 ferme le file descriptor du dir ouvert par opendir
+\b \
+		stat\
+			
+\b0 recupere les informations d\'92un fichier/dossier (follow les liens symboliques (accede a son contenu))
+\b \
+		lstat\
+			
+\b0 r\'e9cup\'e8re les informations d\'92un fichier/dossier (ne follow pas les lien symbolique (r\'e9cup\'e8re les infos du lien))
+\b \
+		exit\
+			
+\b0 fermer un programme\
+	non connus:\
+		/
+\b access\
+			
+\b0 sert a checker les permissions du fichier et de voir si l\'92utilisateur peut l\'92ouvrir, l\'92executer, etc (deprecated function, don\'92t use)
+\b \
+		getcwd\
+			
+\b0 permet de r\'e9cuperer le dir absolu de l\'92endroit ou on se trouve
+\b \
+		chdir\
+			
+\b0 permet de changer de repertoire grace au path envoye en parametre
+\b \
+		fstat\
+			
+\b0 la meme chose que stat a la seule difference que le fichier qui doit \'eatre stated est sp\'e9cifi\'e9 par le file descriptor
+\b \
+		fork\
+		
+\b0 	permet de cr\'e9er un processus enfant qui est un duplicata du processus appelant (parent), la function prend aucun parametre et retourne le pid du processus enfant
+\b \
+		execve\
+			
+\b0 execute le programme pointe par l\'92argument filename. L\'92argument filename doit \'eatre un binary ex\'e9cutable ou un script. Ne retourne rien ou -1 si une erreur est survenue
+\b \
+		wait\
+			
+\b0 suspend l\'92execution du processus parent jusqu\'92a ce qu\'92un enfant soit termin\'e9\
+			retourne l\'92id du processus enfant qui est termin\'e9 sinon -1
+\b \
+		waitpid\
+			
+\b0 suspend l\'92execution du processus parent jusqu\'92a ce qu\'92un enfant SPECIFIE PAR LE PID soit termin\'e9\
+			retourne l\'92id du processus enfant pour lequel son \'e9tat a chang\'e9, sinon -1
+\b \
+		wait3 | wait4\
+			
+\b0 wait3 et wait4 sont similaires a waitpid, autant utiliser waitpid
+\b \
+		signal\
+			
+\b0 intercepte un signal (exemple: ctrl-c, \'85)
+\b \
+		kill\
+			
+\b0 envoie un signal a un process\
+			si ok, retourne 0, sinon -1\
+\
+Expansion ~ = path du users\
+Expansion $ = variables (ex: $HOME, etc\'85)\
+\
+Builtins :\
+- echo\
+- cd\
+- setenv\
+- unsetenv\
+- env\
+- exit\
+\
+\
+Working:\
+\
+	- on utilise get_next_line avec un fd a 0 afin de r\'e9cup\'e9rer l\'92entree utilisateur\
+	- quand on r\'e9cup\'e8re l\'92entree, on commence par la parser (utilisation d\'92un split pour casser tous les espaces et si y a des guillemets il faut prendre en compte dans le splitter)\
+	- on a maintenant r\'e9cup\'e9rer la ligne sous forme de commande/parametres\
+	- creer un dispatcher qui analyse la commande et voit si elle doit utiliser soit un binaire syst\'e8me, soit un builtins soit lancer un script cree par l\'92user\
+	- }
