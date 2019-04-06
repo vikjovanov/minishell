@@ -29,7 +29,7 @@ int		exec_pwd(char **cmd, char **environ, char *path)
 			if (pid == 0)
 			{
 				if ((execve(new_path, cmd, environ)) == -1)
-					ft_printf("minishell: execve: Unable to execute script");
+					ft_printf("minishell: execve: Unable to execute script\n");
 				exit(EXIT_SUCCESS);
 			}
 			wait(NULL);
@@ -55,7 +55,7 @@ int		exec_exact_pwd(char **command, char **environ)
 			if (pid == 0)
 			{
 				if ((execve(command[0], command, environ)) == -1)
-					ft_printf("minishell: execve: Unable to execute script");
+					ft_printf("minishell: execve: Unable to execute script\n");
 				exit(EXIT_SUCCESS);
 			}
 			wait(NULL);

@@ -11,7 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+/*
+int		try_builtins(char **command, char **environ)
+{
 
+	return (0);
+}
+*/
 int		try_exec(char **cmd, char **environ, char *path)
 {
 	char *new_path;
@@ -20,7 +26,7 @@ int		try_exec(char **cmd, char **environ, char *path)
 
 	if ((new_path = create_new_path(path, cmd[0])) == NULL)
 		exit(EXIT_FAILURE);
-	if (lstat(new_path, &info) != -1)
+	if (lstat(new_path, &info) != -1 )
 	{
 		if (info.st_mode & S_IXUSR)
 		{
@@ -29,7 +35,7 @@ int		try_exec(char **cmd, char **environ, char *path)
 			if (pid == 0)
 			{
 				if ((execve(new_path, cmd, environ)) == -1)
-					ft_printf("minishell: execve: Unable to execute script");
+					ft_printf("minishell: execve: Unable to execute script\n");
 				exit(EXIT_SUCCESS);
 			}
 			wait(NULL);
@@ -47,6 +53,10 @@ int		exec_binary_built(char **command, char **environ)
 	int		i;
 	int		result;
 
+	if (ft_strequ(command[0], ".") || ft_strequ(command[0], ".."))
+		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
+	//if (try_builtins(command, environ))
+	//	return (1);
 	i = find_in_tab(environ, "PATH=");
 	path = NULL;
 	if (i != -1)

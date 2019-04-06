@@ -23,6 +23,8 @@ void	command_line(char **environ)
 		ft_printf("{bold}{brightblue}$>{eoc}{eocbold} ");
 		if (get_next_line(0, &line) == 1)
 			command = ft_strsplit(line, ' ');
+		if (ft_strequ(command[0], "exit"))
+			return ;
 		execute_cmd(command, environ);
 	}
 }
