@@ -38,5 +38,10 @@ char	*create_new_path(char *path, char *file_name);
 int		free_tab(char *tab, int return_value);
 int		free_dtab(char **tab, int return_value);
 int		print_error(int error_code, char *error_component);
+int		expansion_tilde(char **command, char **environ);
+int		expansion_dollar(char **command, int i, char **environ);
+
+int		env(char **environ);
+int		echo(char **command);
 
 #endif

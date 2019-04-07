@@ -18,6 +18,8 @@ LIBFT_LIB_CMD= -L libft/ -lft
 
 SRCS= minishell.c generic.c execute.c exec_bin_build.c errors.c
 SRCS+= expansions/tilde.c expansions/dollar.c
+SRCS+= builtins/cd.c builtins/echo.c builtins/setenv.c builtins/env.c \
+		builtins/unsetenv.c
 SRCS_DIR=srcs/
 
 OBJ= $(SRCS:.c=.o)
