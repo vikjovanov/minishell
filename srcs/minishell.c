@@ -32,7 +32,7 @@ int		use_expansion(char **command, char **environ, int type)
 	return (1);
 }
 
-void	command_line(char **environ)
+void	command_line(char ***environ)
 {
 	char *line;
 	char **command;
@@ -43,12 +43,12 @@ void	command_line(char **environ)
 		ft_printf("{bold}{brightblue}$>{eoc}{eocbold} ");
 		if (get_next_line(0, &line) == 1)
 		{
-			use_expansion(&line, environ, 0);
+			use_expansion(&line, *environ, 0);
 			command = ft_strsplitfunc(line, &ft_isspace);
 		}
 		if (ft_strequ(command[0], "exit"))
 			return ;
-		use_expansion(command, environ, 1);
+		use_expansion(command, *environ, 1);
 		execute_cmd(command, environ);
 	}
 }
@@ -59,7 +59,7 @@ int		main(int argc, char **argv, char **environ)
 	argc = 0;
 	environ = dup_env(environ);
 
-	command_line(environ);
+	command_line(&environ);
 
 	return (0);
 }

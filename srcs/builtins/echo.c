@@ -12,21 +12,33 @@
 
 #include "minishell.h"
 
-int		echo(char **command)
+static int		check_params(char **command, char *parameter)
 {
 	int i;
-	char parameter;
+	int j;
 
 	i = 1;
-	parameter = 0;
-	while (command[i])
+	while (command[i] && command[i][0] == '-')
 	{
-		if (ft_strequ(command[i], "-n"))
-			parameter |= 1;
+		j = 1;
+		while (command[i][j] == 'n')
+			j++;
+		if (command[i][j] == '\0')
+			*parameter |= 1;
 		else
 			break ;
 		i++;
 	}
+	return (i);
+}
+
+int				_echo(char **command)
+{
+	int i;
+	char parameter;
+
+	parameter = 0;
+	i = check_params(command, &parameter);
 	while (command[i])
 	{
 		ft_printf("%s", command[i]);
@@ -35,7 +47,7 @@ int		echo(char **command)
 		i++;
 	}
 	if (parameter & 1)
-		ft_printf("{bold}{black}%%{eoc}{eocbold}");
+		ft_printf("{bgwhite}{bold}{black}%%{eoc}{eocbold}{bgeoc}");
 	ft_printf("\n");
 	return (1);
 }

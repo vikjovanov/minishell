@@ -10,4 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
+int		_unsetenv(char **command, char ***environ)
+{
+	int nb_to_delete;
+	int i;
+
+	i = 1;
+	nb_to_delete = 0;
+	while (command[i])
+	{
+		if (find_in_tab(*environ, command[i]) != -1)
+			nb_to_delete++;
+		i++;
+	}
+	printf("%d\n", nb_to_delete);
+	return (1);
+}

@@ -12,12 +12,18 @@
 
 #include "minishell.h"
 
-int		try_builtins(char **command, char **environ)
+int		try_builtins(char **command, char ***environ)
 {
 	if (ft_strequ(command[0], "echo"))
-		return (echo(command));
+		return (_echo(command));
 	else if (ft_strequ(command[0], "env"))
-		return (env(environ));
+		return (_env(*environ));
+	else if (ft_strequ(command[0], "setenv"))
+		return (_setenv(command, environ));
+	else if (ft_strequ(command[0], "unsetenv"))
+		return (_unsetenv(command, environ));
+	else if (ft_strequ(command[0], "cd"))
+		return (_cd(command, *environ));
 	return (0);
 }
 
@@ -50,7 +56,7 @@ int		try_exec(char **cmd, char **environ, char *path)
 	return (free_tab(new_path, 0));
 }
 
-int		exec_binary_built(char **command, char **environ)
+int		exec_binary_built(char **command, char ***environ)
 {
 	char	**path;
 	int		i;
@@ -58,19 +64,19 @@ int		exec_binary_built(char **command, char **environ)
 
 	if (ft_strequ(command[0], ".") || ft_strequ(command[0], ".."))
 		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
-	if (try_builtins(command, environ))
+	if (try_builtins(command, environ) > 0)
 		return (1);
-	i = find_in_tab(environ, "PATH=");
+	i = find_in_tab(*environ, "PATH=");
 	path = NULL;
 	if (i != -1)
-		if ((path = ft_strsplit(&(environ[i][5]), ':')) == NULL)
+		if ((path = ft_strsplit(&((environ[0][i])[5]), ':')) == NULL)
 			exit(EXIT_FAILURE);
 	if (i == -1)
 		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
 	i = 0;
 	while (path[i])
 	{	
-		if ((result = try_exec(command, environ, path[i])) != 0)
+		if ((result = try_exec(command, *environ, path[i])) != 0)
 			return (free_dtab(path, result));
 		i++;
 	}

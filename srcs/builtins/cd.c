@@ -10,4 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
+int		_cd(char **command, char **environ)
+{
+	command = NULL;
+	environ = NULL;
+	return (1);	
+}

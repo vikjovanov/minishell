@@ -67,7 +67,7 @@ int		exec_exact_pwd(char **command, char **environ)
 	return (print_error(ERR_CMD_NOT_FOUND, command[0]));
 }
 
-int		execute_cmd(char **command, char **environ)
+int		execute_cmd(char **command, char ***environ)
 {
 	int result;
 
@@ -75,8 +75,8 @@ int		execute_cmd(char **command, char **environ)
 	if (ft_strchr(command[0], '/') == NULL)
 		result = exec_binary_built(command, environ);
 	else if (command[0][0] == '/')
-		result = exec_exact_pwd(command, environ);
+		result = exec_exact_pwd(command, *environ);
 	else
-		result = exec_pwd(command, environ, getcwd(NULL, 0));
+		result = exec_pwd(command, *environ, getcwd(NULL, 0));
 	return (result);
 }
