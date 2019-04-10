@@ -29,7 +29,7 @@ OBJS_DIR=$(addprefix $(OBJ_DIR),$(OBJ))
 INCLUDES= -Iincludes -Ilibft/includes
 
 CC= gcc
-CFLAGS= -Wall -Werror -Wextra
+CFLAGS= -Wall -Werror -Wextra -g
 
 GCCRESET=\033[0m
 GCCBLUE=\033[1;36m

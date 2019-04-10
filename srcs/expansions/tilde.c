@@ -54,5 +54,6 @@ int		expansion_tilde(char **command, char **environ)
 		no_slash(&(command[index]));
 	else
 		with_slash(&(command[index]), home);
+	ft_strdel(&home);
 	return (index);
 }

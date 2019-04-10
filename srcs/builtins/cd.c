@@ -65,12 +65,21 @@ static int relative_path(char **command)
 	return (free_tab(rel_path, 1));
 }
 
-static int oldpwd_path(char **environ)
+static int oldpwd_path(char **environ, char **command)
 {
 	char	*path;
 	int		index;
+	char	*home;
 
-	index = find_in_tab(environ, "OLDPWD");
+	index = find_in_tab(environ, "OLDPWD=");
+	home = find_in_tab(environ, "HOME=") == -1 ? ft_strdup("")
+		: ft_strdup(&(environ[find_in_tab(environ, "HOME=")][5]));
+	if (ft_array_length((void**)command) == 1 || ft_strequ(command[1], "--"))
+	{
+		if ((chdir(home)) == -1)
+			return (free_tab(home, print_error(ERR_FAILED, "cd")));
+		return (free_tab(home, 1));
+	}
 	if ((path = ft_strdup(index == -1 ? "" : &(environ[index][7]))) == NULL)
 		exit(EXIT_FAILURE);
 	if (check_access(path, NULL) == 1)
@@ -93,9 +102,11 @@ int		_cd(char **command, char ***environ)
 	oldpwd[2] = getcwd(NULL, 0);
 	if (ft_array_length((void**)command) > 2)
 		return (free_dtab(oldpwd, print_error(ERR_TOO_MANY_ARGS, "cd")));
-	if (ft_strlen(command[1]) == 1 && command[1][0] == '-')
+	if (ft_array_length((void**)command) == 1 
+		|| (ft_strlen(command[1]) == 1 && command[1][0] == '-') 
+		|| (ft_strlen(command[1]) == 2 && ft_strequ(command[1], "--")))
 	{
-		if ((oldpwd_path(*environ)) == 1)
+		if ((oldpwd_path(*environ, command)) == 1)
 			return (free_dtab(oldpwd, _setenv(oldpwd, environ)));
 		else
 			return (free_dtab(oldpwd, 1));
@@ -105,8 +116,7 @@ int		_cd(char **command, char ***environ)
 		if ((absolute_path(command)) == 1)
 			_setenv(oldpwd, environ);
 	}
-	else
-		if ((relative_path(command)) == 1)
+	else if ((relative_path(command)) == 1)
 			_setenv(oldpwd, environ);
 	return (free_dtab(oldpwd, 1));	
 }

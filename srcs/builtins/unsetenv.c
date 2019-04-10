@@ -38,15 +38,16 @@ static void	create_new_environ(char **new_env, char ***environ, char **command)
 		while (command[++k])
 		{
 			new_command = ft_strjoin(command[k], "=");
-			if (ft_strstr(environ[0][i], new_command) != NULL)
+			if (ft_strstr(environ[0][i], new_command) != NULL
+				&& free_tab(new_command, 1))
 				break ;
+			ft_strdel(&new_command);
 		}
 		if (command[k] != NULL)
 			continue ;
 		new_env[j] = ft_strdup(environ[0][i]);
 		j++;
 	}
-	ft_strdel(&new_command);
 	free_dtab(*environ, 1);
 	*environ = new_env;
 }
