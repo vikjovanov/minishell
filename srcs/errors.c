@@ -26,5 +26,13 @@ int		print_error(int error_code, char *error_component)
 		ft_printf("minishell: %s: variable name must contain alphanumeric characters.\n", error_component);
 	else if (error_code == ERR_BAD_BEGIN_VARNAME)
 		ft_printf("minishell: %s: variable name must begin with a letter.\n", error_component);
+	else if (error_code == ERR_TOO_FEW_ARGS)
+		ft_printf("minishell: %s: too few arguments.\n", error_component);
+	else if (error_code == ERR_NO_SUCH_FILE_DIR)
+		ft_printf("minishell: %s: no such file or directory.\n", error_component);
+	else if (error_code == ERR_NOT_A_DIRECTORY)
+		ft_printf("minishell: %s: not a directory.\n", error_component);
+	else if (error_code == ERR_FAILED)
+		ft_printf("minishell: %s: failed to execute.\n", error_component);
 	return (error_code);
 }

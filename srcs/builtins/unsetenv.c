@@ -25,7 +25,29 @@ static int is_in_env(char *command, char **environ)
 
 static void	create_new_environ(char **new_env, char ***environ, char **command)
 {
-	
+	int i;
+	int j;
+	int k;
+	char *new_command;
+
+	i = -1;
+	j = 0;
+	while (environ[0][++i])
+	{
+		k = -1;
+		while (command[++k])
+		{
+			new_command = ft_strjoin(command[k], "=");
+			if (ft_strstr(environ[0][i], new_command) != NULL)
+				break ;
+		}
+		if (command[k] != NULL)
+			continue ;
+		new_env[j] = ft_strdup(environ[0][i]);
+		j++;
+	}
+	free_dtab(*environ, 1);
+	*environ = new_env;
 }
 
 int		_unsetenv(char **command, char ***environ)
@@ -36,16 +58,19 @@ int		_unsetenv(char **command, char ***environ)
 
 	i = 1;
 	nb_to_delete = 0;
+	if (command[i] == NULL)
+		return (print_error(ERR_TOO_FEW_ARGS, "unsetenv"));
 	while (command[i])
 	{
 		if (is_in_env(command[i], *environ))
 			nb_to_delete++;
 		i++;
 	}
+	if (nb_to_delete == 0)
+		return (1);
 	new_environ = (char**)malloc((sizeof(char*)
-		* ft_array_length(environ) - nb_to_delete) + 1);
-	new_environ[ft_array_length(environ) - nb_to_delete] = NULL;
-	create_new_environ(new_environ, environ, command);
-	printf("%d\n", nb_to_delete);
+		* ft_array_length((void**)*environ) - nb_to_delete) + 1);
+	new_environ[ft_array_length((void**)*environ) - nb_to_delete] = NULL;
+	create_new_environ(new_environ, environ, &(command[1]));
 	return (1);
 }

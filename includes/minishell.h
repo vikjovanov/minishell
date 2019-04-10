@@ -32,6 +32,10 @@
 #define ERR_TOO_MANY_ARGS 403
 #define ERR_VARNAME_ALNUM 404
 #define ERR_BAD_BEGIN_VARNAME 405
+#define ERR_TOO_FEW_ARGS 406
+#define ERR_NO_SUCH_FILE_DIR 407
+#define ERR_NOT_A_DIRECTORY 408
+#define ERR_FAILED 409
 
 char	**dup_env(char **environ);
 int		execute_cmd(char **command, char ***environ);

@@ -63,15 +63,21 @@ int		check_params(char **param1, char **param2)
 
 int		_setenv(char **command, char ***environ)
 {
+	char **unset;
+
+	unset = NULL;
 	if (ft_array_length((void**)command) > 3)
 		return (print_error(ERR_TOO_MANY_ARGS, "setenv"));
 	if (ft_array_length((void**)command) == 1)
 		return (_env(*environ));
 	if (check_params(&(command[1]), &(command[2])) == 1)
+	{		
+		unset = (char**)malloc(sizeof(char*) * 3);
+		unset[0] = ft_strdup("unsetenv");
+		unset[1] = ft_strdup(command[1]);
+		unset[2] = NULL;
+		_unsetenv(unset, environ);
 		new_environ(environ, command);
-	/*
-	** NE PAS OUBLIER DE RAJOUTER LE UNSETENV AU CAS OU
-	** LA VARIABLE ENVIRONNEMENT EXISTE DEJA
-	*/
-	return (1);
+	}
+	return (free_dtab(unset, 1));
 }
