@@ -52,6 +52,6 @@ int		_env(char **environ);
 int		_echo(char **command);
 int		_setenv(char **command, char ***environ);
 int		_unsetenv(char **command, char ***environ);
-int		_cd(char **command, char **environ);
+int		_cd(char **command, char ***environ);
 
 #endif

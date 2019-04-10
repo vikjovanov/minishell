@@ -46,6 +46,7 @@ static void	create_new_environ(char **new_env, char ***environ, char **command)
 		new_env[j] = ft_strdup(environ[0][i]);
 		j++;
 	}
+	ft_strdel(&new_command);
 	free_dtab(*environ, 1);
 	*environ = new_env;
 }

@@ -66,10 +66,10 @@ int		_setenv(char **command, char ***environ)
 	char **unset;
 
 	unset = NULL;
-	if (ft_array_length((void**)command) > 3)
-		return (print_error(ERR_TOO_MANY_ARGS, "setenv"));
 	if (ft_array_length((void**)command) == 1)
 		return (_env(*environ));
+	if (ft_array_length((void**)command) > 3)
+		return (print_error(ERR_TOO_MANY_ARGS, "setenv"));
 	if (check_params(&(command[1]), &(command[2])) == 1)
 	{		
 		unset = (char**)malloc(sizeof(char*) * 3);

@@ -33,8 +33,8 @@ char	**dup_env(char **environ)
 
 int		find_in_tab(char **tab, char *to_find)
 {
-	int index;
-	char *is_in;
+	int		index;
+	char	*is_in;
 
 	index = 0;
 	while (tab[index])

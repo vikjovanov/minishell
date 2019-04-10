@@ -23,15 +23,15 @@ int		try_builtins(char **command, char ***environ)
 	else if (ft_strequ(command[0], "unsetenv"))
 		return (_unsetenv(command, environ));
 	else if (ft_strequ(command[0], "cd"))
-		return (_cd(command, *environ));
+		return (_cd(command, environ));
 	return (0);
 }
 
 int		try_exec(char **cmd, char **environ, char *path)
 {
-	char *new_path;
+	char		*new_path;
 	struct stat info;
-	int		pid;
+	int			pid;
 
 	if ((new_path = create_new_path(path, cmd[0])) == NULL)
 		exit(EXIT_FAILURE);

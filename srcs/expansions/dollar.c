@@ -62,5 +62,7 @@ int		expansion_dollar(char **command, int i, char **environ)
 	if ((*command = ft_streplace_first(*command, cmd, replacement)) == NULL)
 		exit(EXIT_FAILURE);
 	ft_strdel(&tmp);
+	ft_strdel(&cmd);
+	ft_strdel(&replacement);
 	return (index);
 }

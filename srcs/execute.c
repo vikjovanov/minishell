@@ -14,9 +14,9 @@
 
 int		exec_pwd(char **cmd, char **environ, char *path)
 {
-	char *new_path;
+	char		*new_path;
 	struct stat info;
-	int		pid;
+	int			pid;
 
 	if ((new_path = create_new_path(path, cmd[0])) == NULL)
 		exit(EXIT_FAILURE);
@@ -44,7 +44,7 @@ int		exec_pwd(char **cmd, char **environ, char *path)
 int		exec_exact_pwd(char **command, char **environ)
 {
 	struct stat info;
-	int		pid;
+	int			pid;
 
 	if (lstat(command[0], &info) != -1)
 	{

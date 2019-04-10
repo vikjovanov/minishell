@@ -33,73 +33,80 @@ static int check_access(char *path, char *dirname)
 	return (print_error(ERR_NO_SUCH_FILE_DIR, dirname));
 }
 
-static char *absolute_path(char **command)
+static int absolute_path(char **command)
 {
-	char *absol_path;
-
-	absol_path = NULL;
 	if (check_access(command[1], NULL) == 1)
-	{
 		if ((chdir(command[1])) == -1)
-			print_error(ERR_FAILED, "cd");
-		else
-			if ((absol_path = ft_strdup(command[1])) == NULL)
-				exit(EXIT_FAILURE);
-	} 
-	return (absol_path);
+			return (print_error(ERR_FAILED, "cd"));
+	return (1);
 }
 
-static char *relative_path(char **command)
+static int relative_path(char **command)
 {
 	char *current_path;
 	char *rel_path;
 	char *tmp;
 
 	if ((tmp = getcwd(NULL, 0)) == NULL)
-		return (NULL);
+		return (0);
 	current_path = ft_strjoin(tmp, "/");
 	rel_path = ft_strjoin(current_path, command[1]);
-	ft_strdel(&current_path);
 	ft_strdel(&tmp);
 	if (current_path == NULL || rel_path == NULL)
 		exit(EXIT_FAILURE);
+	ft_strdel(&current_path);
 	if (check_access(rel_path, command[1]) == 1)
 	{
 		if ((chdir(command[1])) == -1)
-		{
-			print_error(ERR_FAILED, "cd");
-			return (NULL);
-		}
+			return (free_tab(rel_path, print_error(ERR_FAILED, "cd")));
 	}
 	else
-		return (NULL);
-	return (rel_path);
+		return (free_tab(rel_path, 0));
+	return (free_tab(rel_path, 1));
 }
 
-static char *oldpwd_path(char **command, char **environ)
+static int oldpwd_path(char **environ)
 {
+	char	*path;
+	int		index;
 
-}
-
-int		_cd(char **command, char **environ)
-{
-	static char	*oldpwd = NULL;
-	char		*new_old;
-
-	new_old = NULL;
-	if (ft_array_length((void**)command) > 2)
-		return (print_error(ERR_TOO_MANY_ARGS, "cd"));
-	if (ft_strlen(command[1] == 1) && ft_strlen(command[1][0] == '-'))
-		oldpwd_path(command, environ);
-	if (command[1][0] == '/')
-		new_old = absolute_path(command);
-	else
-		new_old = relative_path(command);
-	if (new_old != NULL)
+	index = find_in_tab(environ, "OLDPWD");
+	if ((path = ft_strdup(index == -1 ? "" : &(environ[index][7]))) == NULL)
+		exit(EXIT_FAILURE);
+	if (check_access(path, NULL) == 1)
 	{
-		ft_strdel(&oldpwd);
-		oldpwd = ft_strdup(new_old);
-		ft_strdel(&new_old);
+		if ((chdir(path)) == -1)
+			return (free_tab(path, print_error(ERR_FAILED, "cd")));
 	}
-	return (1);	
+	else
+		return (free_tab(path, 0));
+	return (free_tab(path, 1));
+}
+
+int		_cd(char **command, char ***environ)
+{
+	char		**oldpwd;
+
+	oldpwd = (char**)ft_memalloc(sizeof(char*) * 4);
+	oldpwd[0] = ft_strdup("setenv");
+	oldpwd[1] = ft_strdup("OLDPWD");
+	oldpwd[2] = getcwd(NULL, 0);
+	if (ft_array_length((void**)command) > 2)
+		return (free_dtab(oldpwd, print_error(ERR_TOO_MANY_ARGS, "cd")));
+	if (ft_strlen(command[1]) == 1 && command[1][0] == '-')
+	{
+		if ((oldpwd_path(*environ)) == 1)
+			return (free_dtab(oldpwd, _setenv(oldpwd, environ)));
+		else
+			return (free_dtab(oldpwd, 1));
+	}
+	if (command[1][0] == '/')
+	{
+		if ((absolute_path(command)) == 1)
+			_setenv(oldpwd, environ);
+	}
+	else
+		if ((relative_path(command)) == 1)
+			_setenv(oldpwd, environ);
+	return (free_dtab(oldpwd, 1));	
 }
