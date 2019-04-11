@@ -36,10 +36,10 @@ static void	with_slash(char **tilde, char *home)
 	ft_strdel(&tmp);
 }
 
-int		expansion_tilde(char **command, char **environ)
+int			expansion_tilde(char **command, char **environ)
 {
-	char *home;
-	int index;
+	char	*home;
+	int		index;
 
 	index = find_in_tab(command, "~");
 	if (command[index][0] != '~')

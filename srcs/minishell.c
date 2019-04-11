@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	free_dtabv(char **tab)
 {
 	int i;
@@ -84,11 +83,11 @@ void	command_line(char ***environ)
 		ft_strdel(&dirpath);
 		if (get_next_line(0, &line) == 1)
 		{
-			if (ft_strlen(line) == 0 && free_tab(line, 1))
-				continue ;
 			use_expansion(&line, *environ, 0);
 			command = ft_strsplitfunc(line, &ft_isspace);
 			ft_strdel(&line);
+			if (ft_array_length((void**)command) == 0 && free_dtab(command, 1))
+				continue ;
 		}
 		if (ft_strequ(command[0], "exit"))
 			return (free_dtabv(command));
@@ -98,25 +97,12 @@ void	command_line(char ***environ)
 	}
 }
 
-
-
-/*
-** A FAIRE :
-**	GERER LE --
-**	GERER LE " 		 	 	" pour le split
-**	
-**
-**
-*/
-
 int		main(int argc, char **argv, char **environ)
 {
 	argv = NULL;
 	argc = 0;
 	environ = dup_env(environ);
-
 	command_line(&environ);
-
 	free_dtab(environ, 1);
 	return (0);
 }

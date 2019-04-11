@@ -15,15 +15,15 @@
 int		try_builtins(char **command, char ***environ)
 {
 	if (ft_strequ(command[0], "echo"))
-		return (_echo(command));
+		return (built_echo(command));
 	else if (ft_strequ(command[0], "env"))
-		return (_env(*environ));
+		return (built_env(*environ));
 	else if (ft_strequ(command[0], "setenv"))
-		return (_setenv(command, environ));
+		return (built_setenv(command, environ));
 	else if (ft_strequ(command[0], "unsetenv"))
-		return (_unsetenv(command, environ));
+		return (built_unsetenv(command, environ));
 	else if (ft_strequ(command[0], "cd"))
-		return (_cd(command, environ));
+		return (built_cd(command, environ));
 	return (0);
 }
 
@@ -35,7 +35,7 @@ int		try_exec(char **cmd, char **environ, char *path)
 
 	if ((new_path = create_new_path(path, cmd[0])) == NULL)
 		exit(EXIT_FAILURE);
-	if (lstat(new_path, &info) != -1 )
+	if (lstat(new_path, &info) != -1)
 	{
 		if (info.st_mode & S_IXUSR)
 		{
@@ -65,10 +65,7 @@ int		exec_binary_built(char **command, char ***environ)
 	if (ft_strequ(command[0], ".") || ft_strequ(command[0], ".."))
 		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
 	if (try_builtins(command, environ) > 0)
-	{
-		printf("Try builtin return\n");
 		return (1);
-	}
 	i = find_in_tab(*environ, "PATH=");
 	path = NULL;
 	if (i != -1)
@@ -78,7 +75,7 @@ int		exec_binary_built(char **command, char ***environ)
 		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
 	i = 0;
 	while (path[i])
-	{	
+	{
 		if ((result = try_exec(command, *environ, path[i])) != 0)
 			return (free_dtab(path, result));
 		i++;

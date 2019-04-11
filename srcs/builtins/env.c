@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		_env(char **environ)
+int		built_env(char **environ)
 {
 	int i;
 

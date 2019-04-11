@@ -32,10 +32,10 @@ static int		check_params(char **command, char *parameter)
 	return (i);
 }
 
-int				_echo(char **command)
+int				built_echo(char **command)
 {
-	int i;
-	char parameter;
+	int		i;
+	char	parameter;
 
 	parameter = 0;
 	i = check_params(command, &parameter);

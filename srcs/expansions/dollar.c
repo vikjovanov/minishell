@@ -24,7 +24,6 @@ char	*get_varname(char *command)
 	while (!ft_isspace(command[++i]) && command[i] != '/' && command[i] != '\0')
 		size++;
 	return (ft_strsub(command, i - size - 1, size + 1));
-
 }
 
 int		is_in_env(char *varname, char **environ)
@@ -40,11 +39,11 @@ int		is_in_env(char *varname, char **environ)
 
 int		expansion_dollar(char **command, int i, char **environ)
 {
-	int 	index;
-	char *cmd;
-	char *tmp;
-	char *replacement;
-	int j;
+	int		index;
+	char	*cmd;
+	char	*tmp;
+	char	*replacement;
+	int		j;
 
 	replacement = NULL;
 	index = ft_strclen(&(command[0][i]), '$');

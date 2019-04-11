@@ -14,10 +14,10 @@
 
 void	new_environ(char ***environ, char **cmd)
 {
-	int size;
-	int i;
-	char **new_env;
-	char *tmp;
+	int		size;
+	int		i;
+	char	**new_env;
+	char	*tmp;
 
 	size = ft_array_length((void**)*environ);
 	if ((new_env = (char**)malloc(sizeof(char*) * (size + 2))) == NULL)
@@ -39,8 +39,8 @@ void	new_environ(char ***environ, char **cmd)
 
 int		check_params(char **param1, char **param2)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	tmp = NULL;
@@ -61,22 +61,22 @@ int		check_params(char **param1, char **param2)
 	return (1);
 }
 
-int		_setenv(char **command, char ***environ)
+int		built_setenv(char **command, char ***environ)
 {
 	char **unset;
 
 	unset = NULL;
 	if (ft_array_length((void**)command) == 1)
-		return (_env(*environ));
+		return (built_env(*environ));
 	if (ft_array_length((void**)command) > 3)
 		return (print_error(ERR_TOO_MANY_ARGS, "setenv"));
 	if (check_params(&(command[1]), &(command[2])) == 1)
-	{		
+	{
 		unset = (char**)malloc(sizeof(char*) * (2 + 1));
 		unset[0] = ft_strdup("unsetenv");
 		unset[1] = ft_strdup(command[1]);
 		unset[2] = NULL;
-		_unsetenv(unset, environ);
+		built_unsetenv(unset, environ);
 		new_environ(environ, command);
 	}
 	return (free_dtab(unset, 1));
