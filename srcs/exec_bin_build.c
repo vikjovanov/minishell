@@ -65,7 +65,10 @@ int		exec_binary_built(char **command, char ***environ)
 	if (ft_strequ(command[0], ".") || ft_strequ(command[0], ".."))
 		return (print_error(ERR_CMD_NOT_FOUND, command[0]));
 	if (try_builtins(command, environ) > 0)
+	{
+		printf("Try builtin return\n");
 		return (1);
+	}
 	i = find_in_tab(*environ, "PATH=");
 	path = NULL;
 	if (i != -1)

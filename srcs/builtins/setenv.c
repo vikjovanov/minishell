@@ -72,7 +72,7 @@ int		_setenv(char **command, char ***environ)
 		return (print_error(ERR_TOO_MANY_ARGS, "setenv"));
 	if (check_params(&(command[1]), &(command[2])) == 1)
 	{		
-		unset = (char**)malloc(sizeof(char*) * 3);
+		unset = (char**)malloc(sizeof(char*) * (2 + 1));
 		unset[0] = ft_strdup("unsetenv");
 		unset[1] = ft_strdup(command[1]);
 		unset[2] = NULL;

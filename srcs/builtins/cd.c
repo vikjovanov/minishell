@@ -71,9 +71,12 @@ static int oldpwd_path(char **environ, char **command)
 	int		index;
 	char	*home;
 
+	printf("putain\n");
 	index = find_in_tab(environ, "OLDPWD=");
+	printf("%d\n", find_in_tab(environ, "HOME="));
 	home = find_in_tab(environ, "HOME=") == -1 ? ft_strdup("")
 		: ft_strdup(&(environ[find_in_tab(environ, "HOME=")][5]));
+	printf("home: %s\n", home);
 	if (ft_array_length((void**)command) == 1 || ft_strequ(command[1], "--"))
 	{
 		if ((chdir(home)) == -1)
@@ -82,13 +85,21 @@ static int oldpwd_path(char **environ, char **command)
 	}
 	if ((path = ft_strdup(index == -1 ? "" : &(environ[index][7]))) == NULL)
 		exit(EXIT_FAILURE);
+	printf("PATH: %s\n", path);
 	if (check_access(path, NULL) == 1)
 	{
+		printf("Check access completed\n");
 		if ((chdir(path)) == -1)
+		{
+			printf("Chdir ok\n");
 			return (free_tab(path, print_error(ERR_FAILED, "cd")));
+		}
 	}
 	else
+	{
+		printf("check access failed\n");
 		return (free_tab(path, 0));
+	}
 	return (free_tab(path, 1));
 }
 
@@ -100,16 +111,29 @@ int		_cd(char **command, char ***environ)
 	oldpwd[0] = ft_strdup("setenv");
 	oldpwd[1] = ft_strdup("OLDPWD");
 	oldpwd[2] = getcwd(NULL, 0);
+	oldpwd[3] = NULL;
+	printf("0: %s\n", oldpwd[0]);
+	printf("1: %s\n", oldpwd[1]);
+	printf("2: %s\n", oldpwd[2]);
+	printf("3: %s\n", oldpwd[3]);
 	if (ft_array_length((void**)command) > 2)
 		return (free_dtab(oldpwd, print_error(ERR_TOO_MANY_ARGS, "cd")));
 	if (ft_array_length((void**)command) == 1 
 		|| (ft_strlen(command[1]) == 1 && command[1][0] == '-') 
 		|| (ft_strlen(command[1]) == 2 && ft_strequ(command[1], "--")))
 	{
+		printf("Condtion des 3\n");
+		printf("%p\n", *environ);
 		if ((oldpwd_path(*environ, command)) == 1)
-			return (free_dtab(oldpwd, _setenv(oldpwd, environ)));
+		{
+			printf("reussi\n");
+			return (_setenv(oldpwd, environ) && free_dtab(oldpwd, 1));
+		}
 		else
+		{
+			printf("pas reussi\n");
 			return (free_dtab(oldpwd, 1));
+		}
 	}
 	if (command[1][0] == '/')
 	{

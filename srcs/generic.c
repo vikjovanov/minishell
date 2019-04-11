@@ -39,7 +39,7 @@ int		find_in_tab(char **tab, char *to_find)
 	index = 0;
 	while (tab[index])
 	{
-		if ((is_in = ft_strstr(tab[index], to_find)) != NULL)
+		if ((is_in = ft_strnstr(tab[index], to_find, ft_strlen(to_find))) != NULL)
 			return (index);
 		index++;
 	}
