@@ -6,7 +6,7 @@
 #    By: vjovanov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/20 13:43:14 by vjovanov          #+#    #+#              #
-#    Updated: 2019/02/20 13:43:15 by vjovanov         ###   ########.fr        #
+#    Updated: 2019/04/12 13:21:14 by vjovanov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ OBJS_DIR=$(addprefix $(OBJ_DIR),$(OBJ))
 INCLUDES= -Iincludes -Ilibft/includes
 
 CC= gcc
-CFLAGS= -Wall -Werror -Wextra -g
+CFLAGS= -Wall -Werror -Wextra
 
 GCCRESET=\033[0m
 GCCBLUE=\033[1;36m

@@ -21,7 +21,7 @@ char	*get_varname(char *command)
 	size = 0;
 	while (command[i] != '$')
 		i++;
-	while (!ft_isspace(command[++i]) && command[i] != '/' && command[i] != '\0')
+	while (ft_isalnum(command[++i]) || command[i] == '_')
 		size++;
 	return (ft_strsub(command, i - size - 1, size + 1));
 }

@@ -80,6 +80,7 @@ static int	oldpwd_path(char **environ, char **command)
 			return (free_tab(home, print_error(ERR_FAILED, "cd")));
 		return (free_tab(home, 1));
 	}
+	ft_strdel(&home);
 	if ((path = ft_strdup(index == -1 ? "" : &(environ[index][7]))) == NULL)
 		exit(EXIT_FAILURE);
 	if (check_access(path, NULL) == 1)
